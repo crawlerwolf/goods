@@ -5,7 +5,7 @@
 用于公司消耗品的申请和领取
 ```
 ## 项目效果
-```
+
 首页
 ![image](https://user-images.githubusercontent.com/32831553/158531754-8e3ec82e-113c-4af2-8931-216c734b9baf.png)
 
@@ -18,7 +18,6 @@
 物品领取
 ![image](https://user-images.githubusercontent.com/32831553/158532338-58ac7af6-00b5-4f41-b370-d10227a0a6c9.png)
 
-```
 ## 功能
 ```
 申请人可添加需要的物品和修改物品信息
