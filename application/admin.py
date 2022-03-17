@@ -5,6 +5,7 @@ import datetime
 import logging
 
 from django.contrib import admin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
@@ -31,20 +32,20 @@ class UserAdmin(admin.ModelAdmin):
 
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ('good_name', 'good_type', 'good_num', 'good_use', 'application_department', 'application_user',
-                    'application_date', 'application_mark', 'receive_department', 'receive_user', 'receive_date',
-                    'divide_use', 'divide_mark', 'is_receive')
+                    'application_date', 'is_purchase', 'is_reach', 'receive_department',
+                    'receive_user', 'receive_date', 'divide_use', 'is_receive')
 
-    list_filter = ('application_user', 'application_date', 'receive_department',
+    list_filter = ('application_user', 'application_date', 'receive_department', 'is_purchase', 'is_reach',
                    'receive_user', 'receive_date', 'divide_use')
 
     search_fields = ('good_name', 'application_user', 'application_date', 'receive_department',
-                   'receive_user', 'receive_date', 'divide_use')
+                     'receive_user', 'receive_date', 'divide_use')
 
     autocomplete_fields = ('receive_user', 'divide_use')
 
-    ordering = ('is_receive',)
+    ordering = ('is_purchase', 'is_reach', 'is_receive')
 
-    actions = ['export_model_as_csv', 'export_model_as_json', 'export_model_as_excel']
+    actions = ['export_model_as_csv', 'export_model_as_json']
 
     @admin.action(permissions=['csv'], description=u'导出为csv')
     def export_model_as_csv(self, request, queryset):
@@ -105,25 +106,39 @@ class ApplicationAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         group_names = self.get_group_names(request.user)
 
+        if 'purchase' in group_names:
+            if request.path.endswith('change/') and obj.application_user != request.user:
+                return gd.purchase_readonly_fields
         if 'cashier' in group_names:
-            return gd.receive_readonly_fields
+            if request.path.endswith('change/') and obj.application_user != request.user:
+                return gd.receive_readonly_fields
         return ()
 
     def get_fieldsets(self, request, obj=None):
         group_names = self.get_group_names(request.user)
-
+        if 'cashier' in group_names:
+            if request.path.endswith('change/') and obj.application_user != request.user:
+                return gd.receive_fieldsets
+            return gd.application_fieldsets
+        if 'purchase' in group_names:
+            if request.path.endswith('change/') and obj.application_user != request.user:
+                return gd.purchase_fieldsets
+            return gd.application_fieldsets
         if 'staff' in group_names:
             return gd.application_fieldsets
-        if 'cashier' in group_names:
-            return gd.receive_fieldsets
         return gd.default_fieldsets
 
     def get_list_editabel(self, request):
         group_names = self.get_group_names(request.user)
+        if request.user.is_superuser:
+            return ('application_mark', 'is_purchase', 'is_reach', 'receive_department',
+                    'receive_user', 'divide_mark', 'is_receive')
+        if 'cashier' in group_names:
+            return ('receive_department', 'receive_user', 'divide_mark', 'is_receive')
+        if 'purchase' in group_names:
+            return ('is_purchase', 'is_reach')
         if 'staff' in group_names:
             return ('application_mark',)
-        if 'cashier' in group_names or request.user.is_superuser:
-            return ('receive_department', 'receive_user', 'divide_mark', 'is_receive')
         return ()
 
     def get_changelist_instance(self, request):
@@ -141,17 +156,24 @@ class ApplicationAdmin(admin.ModelAdmin):
         qs = super(ApplicationAdmin, self).get_queryset(request)
 
         group_names = self.get_group_names(request.user)
-        if request.user.is_superuser or 'cashier' in group_names:
-            return qs
-        return Application.objects.filter(application_user=request.user)
+        if 'staff' in group_names:
+            return Application.objects.filter(application_user=request.user)
+        return qs
 
     def save_model(self, request, obj, form, change):
         group_names = self.get_group_names(request.user)
+
+        if 'cashier' in group_names:
+            if request.path.endswith('add/'):
+                obj.application_user = request.user
+            else:
+                obj.divide_use = request.user
+                obj.receive_date = datetime.datetime.now()
+        if 'purchase' in group_names:
+            if request.path.endswith('add/'):
+                obj.application_user = request.user
         if 'staff' in group_names:
             obj.application_user = request.user
-        if 'cashier' in group_names:
-            obj.divide_use = request.user
-            obj.receive_date = datetime.datetime.now()
         obj.save()
 
 

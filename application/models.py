@@ -20,16 +20,22 @@ class Application(models.Model):
     application_mark = models.CharField(verbose_name=u'申请备注', help_text=u'申请备注', max_length=255,
                                         null=True, blank=True)
 
+    # 物品采购
+    is_purchase = models.BooleanField(default=False, verbose_name=u'是否购买', help_text=u'是否购买',
+                                     null=True, blank=True)
+    is_reach = models.BooleanField(default=False, verbose_name=u'是否收到', help_text=u'是否收到',
+                                      null=True, blank=True)
+
     # 物品领取
-    receive_department = models.CharField(verbose_name=u'领用部门', help_text=u'领用部门', max_length=255)
+    receive_department = models.CharField(verbose_name=u'领用部门', help_text=u'领用部门', max_length=255, blank=True)
     receive_user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='receive_user',
-                                     verbose_name=u'领用人', help_text=u'领用人', null=True)
+                                     verbose_name=u'领用人', help_text=u'领用人', null=True, blank=True)
     receive_date = models.DateField(verbose_name=u'领用日期', help_text=u'领用日期', null=True)
     divide_use = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='divide_use',
                                    verbose_name=u'分发人', help_text=u'分发人', null=True)
     divide_mark = models.CharField(verbose_name=u'分发备注', help_text=u'分发备注', max_length=255,
                                    null=True, blank=True)
-    is_receive = models.BooleanField(default=False, verbose_name=u'是否已领取', help_text=u'是否已领取',
+    is_receive = models.BooleanField(default=False, verbose_name=u'是否领取', help_text=u'是否领取',
                                      null=True, blank=True)
 
     def __str__(self):
