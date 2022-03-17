@@ -16,16 +16,12 @@ from application import goodsdata as gd
 logger = logging.getLogger(__name__)
 
 
-class DateUserBoolEnconding(json.JSONEncoder):
+class DateUserEnconding(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, datetime.date):
             return o.strftime('%Y-%m-%d')
         if isinstance(o, User):
             return o.username
-        if isinstance(o, bool):
-            if o:
-                return u'是'
-            return u'否'
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -102,7 +98,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             json_line_values = {}
             for filed in filed_list:
                 json_line_values[filed] = getattr(obj, filed)
-            data = json.dumps(json_line_values, cls=DateUserBoolEnconding, ensure_ascii=False)
+            data = json.dumps(json_line_values, cls=DateUserEnconding, ensure_ascii=False)
             file.write(data)
             file.write("\n")
         response.write(file.getvalue())
