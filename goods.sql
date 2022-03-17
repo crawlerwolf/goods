@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80013
 File Encoding         : 65001
 
-Date: 2022-03-17 12:44:02
+Date: 2022-03-17 16:27:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,26 +37,32 @@ CREATE TABLE `application_application` (
   `is_purchase` tinyint(1) DEFAULT NULL,
   `is_reach` tinyint(1) DEFAULT NULL,
   `is_receive` tinyint(1) DEFAULT NULL,
+  `purchase_date` date DEFAULT NULL,
+  `purchase_user_id` int(11) DEFAULT NULL,
+  `reach_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `application_application_receive_user_id_68365522_fk_auth_user_id` (`receive_user_id`),
   KEY `application_application_divide_use_id_3d0fbe09_fk_auth_user_id` (`divide_use_id`),
   KEY `application_applicat_application_user_id_2253cc1c_fk_auth_user` (`application_user_id`),
+  KEY `application_applicat_purchase_user_id_c31be2f4_fk_auth_user` (`purchase_user_id`),
   CONSTRAINT `application_applicat_application_user_id_2253cc1c_fk_auth_user` FOREIGN KEY (`application_user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `application_applicat_purchase_user_id_c31be2f4_fk_auth_user` FOREIGN KEY (`purchase_user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `application_application_divide_use_id_3d0fbe09_fk_auth_user_id` FOREIGN KEY (`divide_use_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `application_application_receive_user_id_68365522_fk_auth_user_id` FOREIGN KEY (`receive_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of application_application
 -- ----------------------------
-INSERT INTO `application_application` VALUES ('2', 'A4打印纸', '包', '11', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1');
-INSERT INTO `application_application` VALUES ('3', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1');
-INSERT INTO `application_application` VALUES ('4', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '3', '4', '3', '1', '1', '1');
-INSERT INTO `application_application` VALUES ('5', 'A4打印纸', '包', '10', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '3', '4', '3', '1', '1', '1');
-INSERT INTO `application_application` VALUES ('6', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-16', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1');
-INSERT INTO `application_application` VALUES ('7', '机械硬盘', '1TB', '5', '扩容', '研发', '2022-03-17', null, '研发', '2022-03-17', null, '3', '4', '3', '1', '1', '1');
-INSERT INTO `application_application` VALUES ('9', 'A4打印纸', '包', '1', '打印', '分发', '2022-03-17', null, '分发', '2022-03-17', null, '4', '4', '4', '1', '1', '1');
-INSERT INTO `application_application` VALUES ('11', 'A4打印纸', '包', '1', '打印', '分发', '2022-03-17', null, '', null, null, '4', null, null, '1', '0', '0');
+INSERT INTO `application_application` VALUES ('2', 'A4打印纸', '包', '11', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('3', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('4', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '3', '4', '3', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('5', 'A4打印纸', '包', '10', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '3', '4', '3', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('6', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-16', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('7', '机械硬盘', '1TB', '5', '扩容', '研发', '2022-03-17', null, '研发', '2022-03-17', null, '3', '4', '3', '1', '1', '1', '2022-03-17', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('9', 'A4打印纸', '包', '1', '打印', '分发', '2022-03-17', null, '分发', '2022-03-17', null, '4', '4', '4', '1', '1', '1', '2022-03-17', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('11', 'A4打印纸', '包', '1', '打印', '分发', '2022-03-17', null, '', null, null, '4', null, null, '1', '0', '0', '2022-03-17', '3', null);
+INSERT INTO `application_application` VALUES ('12', '机械硬盘', '1TB', '1', '扩容', '采购', '2022-03-17', null, '', null, null, '2', null, null, '0', '0', '0', null, null, null);
 
 -- ----------------------------
 -- Table structure for auth_group
@@ -181,10 +187,10 @@ CREATE TABLE `auth_user` (
 -- ----------------------------
 -- Records of auth_user
 -- ----------------------------
-INSERT INTO `auth_user` VALUES ('1', 'pbkdf2_sha256$260000$hSfRks9gA4hzsvAlvlZPo8$cIhDWZYI3gDm31UFDykPFW017GVacPJv4pzczuW9q8s=', '2022-03-17 12:39:01.486966', '1', 'admin', '', '', 'admin@qq.com', '1', '1', '2022-03-15 09:58:48.851740');
-INSERT INTO `auth_user` VALUES ('2', 'pbkdf2_sha256$260000$rkb5sBrAQLMoE3v5kLzHdX$iq+cmRkzvWTn3lEg6UMUN96X+XDIExYq1N93I0BMTH8=', '2022-03-16 16:08:10.977131', '0', 'demo1', '', '', '', '1', '1', '2022-03-15 10:27:00.000000');
-INSERT INTO `auth_user` VALUES ('3', 'pbkdf2_sha256$260000$8ectHMID3bJUdUUhoW9MBf$+npTtesrf/A0mby4aWBpFY11kOXYq33sIBcgj+bHooY=', '2022-03-17 12:40:08.297976', '0', 'demo2', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
-INSERT INTO `auth_user` VALUES ('4', 'pbkdf2_sha256$260000$Mm2h6wO9g9mne3r0lkLYVa$sGpcwJFRGs2gMi0kyw9j4U7OOo1DGJyQYivyatmSKps=', '2022-03-17 12:35:09.006412', '0', 'demo3', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
+INSERT INTO `auth_user` VALUES ('1', 'pbkdf2_sha256$260000$hSfRks9gA4hzsvAlvlZPo8$cIhDWZYI3gDm31UFDykPFW017GVacPJv4pzczuW9q8s=', '2022-03-17 16:24:15.063368', '1', 'admin', '', '', 'admin@qq.com', '1', '1', '2022-03-15 09:58:48.851740');
+INSERT INTO `auth_user` VALUES ('2', 'pbkdf2_sha256$260000$rkb5sBrAQLMoE3v5kLzHdX$iq+cmRkzvWTn3lEg6UMUN96X+XDIExYq1N93I0BMTH8=', '2022-03-17 16:26:04.353789', '0', 'demo1', '', '', '', '1', '1', '2022-03-15 10:27:00.000000');
+INSERT INTO `auth_user` VALUES ('3', 'pbkdf2_sha256$260000$8ectHMID3bJUdUUhoW9MBf$+npTtesrf/A0mby4aWBpFY11kOXYq33sIBcgj+bHooY=', '2022-03-17 16:25:53.204648', '0', 'demo2', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
+INSERT INTO `auth_user` VALUES ('4', 'pbkdf2_sha256$260000$Mm2h6wO9g9mne3r0lkLYVa$sGpcwJFRGs2gMi0kyw9j4U7OOo1DGJyQYivyatmSKps=', '2022-03-17 16:04:43.498320', '0', 'demo3', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
 
 -- ----------------------------
 -- Table structure for auth_user_groups
@@ -245,7 +251,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of django_admin_log
@@ -331,6 +337,22 @@ INSERT INTO `django_admin_log` VALUES ('78', '2022-03-17 12:39:45.665281', '4', 
 INSERT INTO `django_admin_log` VALUES ('79', '2022-03-17 12:39:45.865747', '3', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u662f\\u5426\\u8d2d\\u4e70\", \"\\u662f\\u5426\\u6536\\u5230\"]}}]', '7', '1');
 INSERT INTO `django_admin_log` VALUES ('80', '2022-03-17 12:39:46.067210', '2', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u662f\\u5426\\u8d2d\\u4e70\", \"\\u662f\\u5426\\u6536\\u5230\"]}}]', '7', '1');
 INSERT INTO `django_admin_log` VALUES ('81', '2022-03-17 12:39:54.105762', '11', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u662f\\u5426\\u8d2d\\u4e70\"]}}]', '7', '1');
+INSERT INTO `django_admin_log` VALUES ('82', '2022-03-17 15:37:51.869649', '11', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('83', '2022-03-17 15:37:52.029221', '9', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('84', '2022-03-17 15:37:52.195780', '7', '机械硬盘', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('85', '2022-03-17 15:37:52.746307', '6', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('86', '2022-03-17 15:37:52.838057', '5', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('87', '2022-03-17 15:37:52.954745', '4', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('88', '2022-03-17 15:37:53.046528', '3', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('89', '2022-03-17 15:37:53.155237', '2', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u91c7\\u8d2d\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('90', '2022-03-17 15:38:17.478129', '9', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('91', '2022-03-17 15:38:17.610783', '7', '机械硬盘', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('92', '2022-03-17 15:38:17.769350', '6', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('93', '2022-03-17 15:38:17.869112', '5', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('94', '2022-03-17 15:38:17.985800', '4', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('95', '2022-03-17 15:38:18.078524', '3', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('96', '2022-03-17 15:38:18.229149', '2', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('97', '2022-03-17 15:40:05.750432', '12', '机械硬盘', '1', '[{\"added\": {}}]', '7', '2');
 
 -- ----------------------------
 -- Table structure for django_content_type
@@ -365,7 +387,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of django_migrations
@@ -397,6 +419,8 @@ INSERT INTO `django_migrations` VALUES ('24', 'application', '0006_alter_applica
 INSERT INTO `django_migrations` VALUES ('25', 'application', '0007_alter_application_options', '2022-03-16 09:06:51.632202');
 INSERT INTO `django_migrations` VALUES ('30', 'application', '0008_auto_20220317_1220', '2022-03-17 12:21:46.323954');
 INSERT INTO `django_migrations` VALUES ('31', 'application', '0009_auto_20220317_1236', '2022-03-17 12:36:39.405572');
+INSERT INTO `django_migrations` VALUES ('32', 'application', '0010_auto_20220317_1504', '2022-03-17 15:05:10.090648');
+INSERT INTO `django_migrations` VALUES ('33', 'application', '0011_auto_20220317_1537', '2022-03-17 15:37:46.060195');
 
 -- ----------------------------
 -- Table structure for django_session
@@ -414,4 +438,3 @@ CREATE TABLE `django_session` (
 -- Records of django_session
 -- ----------------------------
 INSERT INTO `django_session` VALUES ('0pt3hixath22h5li4g5b4r9aeaijg8os', '.eJxVjMsOwiAQRf-FtSG8Cy7d-w0EmBmpGkhKuzL-uzbpQrf3nHNfLKZtrXEbuMQZ2JlpdvrdcioPbDuAe2q3zktv6zJnviv8oINfO-Dzcrh_BzWN-q2lD1QCOCIMlpLPCvVEUkg9WQVChayFMmSskU456SmDQ9ICtAoBi2DvD-CmN38:1nUhvk:KcDZMT-DBBgTR_-u8J_gqFwNtNGff12aXz-CpjBb314', '2022-03-31 12:40:08.357817');
-INSERT INTO `django_session` VALUES ('mor27j74czmwsozl9sujnrn7g7dary3a', '.eJxVjMsOwiAQRf-FtSG8Cy7d-w0EmBmpGkhKuzL-uzbpQrf3nHNfLKZtrXEbuMQZ2JlpdvrdcioPbDuAe2q3zktv6zJnviv8oINfO-Dzcrh_BzWN-q2lD1QCOCIMlpLPCvVEUkg9WQVChayFMmSskU456SmDQ9ICtAoBi2DvD-CmN38:1nUfaO:nA-Ye3qm0d6WayU6Taim5kzeWjWSV5emWY9bh-xkGwM', '2022-03-31 10:09:56.399533');

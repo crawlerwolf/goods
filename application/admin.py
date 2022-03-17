@@ -5,7 +5,6 @@ import datetime
 import logging
 
 from django.contrib import admin
-from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
@@ -17,12 +16,16 @@ from application import goodsdata as gd
 logger = logging.getLogger(__name__)
 
 
-class DateUserEnconding(json.JSONEncoder):
+class DateUserBoolEnconding(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, datetime.date):
             return o.strftime('%Y-%m-%d')
         if isinstance(o, User):
             return o.username
+        if isinstance(o, bool):
+            if o:
+                return u'是'
+            return u'否'
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -31,15 +34,12 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('good_name', 'good_type', 'good_num', 'good_use', 'application_department', 'application_user',
-                    'application_date', 'is_purchase', 'is_reach', 'receive_department',
-                    'receive_user', 'receive_date', 'divide_use', 'is_receive')
 
     list_filter = ('application_user', 'application_date', 'receive_department', 'is_purchase', 'is_reach',
                    'receive_user', 'receive_date', 'divide_use')
 
-    search_fields = ('good_name', 'application_user', 'application_date', 'receive_department',
-                     'receive_user', 'receive_date', 'divide_use')
+    search_fields = ('good_name', 'application_user__username', 'application_date', 'receive_department',
+                     'receive_user__username', 'receive_date', 'divide_use__username')
 
     autocomplete_fields = ('receive_user', 'divide_use')
 
@@ -49,9 +49,15 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     @admin.action(permissions=['csv'], description=u'导出为csv')
     def export_model_as_csv(self, request, queryset):
+        group_names = self.get_group_names(request.user)
         response = HttpResponse(content_type='text/csv')
         response.charset = 'utf-8-sig' if "Windows" in request.headers.get('User-Agent') else 'utf-8'
-        filed_list = gd.export_table_fields_csv
+        if request.user.is_superuser:
+            filed_list = gd.admin_export_table_fields_csv
+        elif 'purchase' in group_names:
+            filed_list = gd.purchase_export_table_fields_csv
+        else:
+            filed_list = gd.export_table_fields_csv
         response['Content-Disposition'] = "attachment; filename=goods-dates-list-%s.csv" % (
             datetime.datetime.now().strftime("%Y-%m-%d %H/%M/%S")
         )
@@ -79,18 +85,24 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     @admin.action(permissions=['json'], description=u'导出为json')
     def export_model_as_json(self, request, queryset):
+        group_names = self.get_group_names(request.user)
         response = HttpResponse(content_type='application/json')
         response['Content-Disposition'] = "attachment; filename=goods-dates-list-%s.json" % (
             datetime.datetime.now().strftime("%Y-%m-%d %H/%M/%S")
         )
-        filed_list = gd.export_table_fields_json
+        if request.user.is_superuser:
+            filed_list = gd.admin_export_table_fields_json
+        elif 'purchase' in group_names:
+            filed_list = gd.purchase_export_table_fields_json
+        else:
+            filed_list = gd.export_table_fields_json
 
         file = io.StringIO()
         for obj in queryset:
             json_line_values = {}
             for filed in filed_list:
                 json_line_values[filed] = getattr(obj, filed)
-            data = json.dumps(json_line_values, cls=DateUserEnconding, ensure_ascii=False)
+            data = json.dumps(json_line_values, cls=DateUserBoolEnconding, ensure_ascii=False)
             file.write(data)
             file.write("\n")
         response.write(file.getvalue())
@@ -128,17 +140,18 @@ class ApplicationAdmin(admin.ModelAdmin):
             return gd.application_fieldsets
         return gd.default_fieldsets
 
+    def get_list_display(self, request):
+        group_names = self.get_group_names(request.user)
+        if 'purchase' in group_names or request.user.is_superuser:
+            return gd.purchase_list_display
+        return gd.default_list_display
+
     def get_list_editabel(self, request):
         group_names = self.get_group_names(request.user)
-        if request.user.is_superuser:
-            return ('application_mark', 'is_purchase', 'is_reach', 'receive_department',
-                    'receive_user', 'divide_mark', 'is_receive')
-        if 'cashier' in group_names:
+        if 'cashier' in group_names or request.user.is_superuser:
             return ('receive_department', 'receive_user', 'divide_mark', 'is_receive')
-        if 'purchase' in group_names:
-            return ('is_purchase', 'is_reach')
-        if 'staff' in group_names:
-            return ('application_mark',)
+        if 'purchase' in group_names or request.user.is_superuser:
+            return ('is_purchase', 'is_reach', 'purchase_date', 'reach_date')
         return ()
 
     def get_changelist_instance(self, request):
@@ -172,6 +185,8 @@ class ApplicationAdmin(admin.ModelAdmin):
         if 'purchase' in group_names:
             if request.path.endswith('add/'):
                 obj.application_user = request.user
+            else:
+                obj.purchase_user = request.user
         if 'staff' in group_names:
             obj.application_user = request.user
         obj.save()

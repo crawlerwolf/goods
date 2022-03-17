@@ -25,6 +25,10 @@ class Application(models.Model):
                                      null=True, blank=True)
     is_reach = models.BooleanField(default=False, verbose_name=u'是否收到', help_text=u'是否收到',
                                       null=True, blank=True)
+    purchase_user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='purchase_user',
+                                     verbose_name=u'采购人', help_text=u'采购人', null=True, blank=True)
+    purchase_date = models.DateField(verbose_name=u'采购日期', help_text=u'采购日期', null=True, blank=True)
+    reach_date = models.DateField(verbose_name=u'到货日期', help_text=u'到货日期', null=True, blank=True)
 
     # 物品领取
     receive_department = models.CharField(verbose_name=u'领用部门', help_text=u'领用部门', max_length=255, blank=True)
