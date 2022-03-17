@@ -29,6 +29,8 @@ class Application(models.Model):
                                    verbose_name=u'分发人', help_text=u'分发人', null=True)
     divide_mark = models.CharField(verbose_name=u'分发备注', help_text=u'分发备注', max_length=255,
                                    null=True, blank=True)
+    is_receive = models.BooleanField(default=False, verbose_name=u'是否已领取', help_text=u'是否已领取',
+                                     null=True, blank=True)
 
     def __str__(self):
         return self.good_name

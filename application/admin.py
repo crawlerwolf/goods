@@ -24,16 +24,25 @@ class DateUserEnconding(json.JSONEncoder):
             return o.username
 
 
+class UserAdmin(admin.ModelAdmin):
+    search_fields = ('username',)
+    ordering = ('username',)
+
+
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ('good_name', 'good_type', 'good_num', 'good_use', 'application_department', 'application_user',
                     'application_date', 'application_mark', 'receive_department', 'receive_user', 'receive_date',
-                    'divide_use', 'divide_mark')
+                    'divide_use', 'divide_mark', 'is_receive')
 
     list_filter = ('application_user', 'application_date', 'receive_department',
                    'receive_user', 'receive_date', 'divide_use')
 
     search_fields = ('good_name', 'application_user', 'application_date', 'receive_department',
                    'receive_user', 'receive_date', 'divide_use')
+
+    autocomplete_fields = ('receive_user', 'divide_use')
+
+    ordering = ('is_receive',)
 
     actions = ['export_model_as_csv', 'export_model_as_json', 'export_model_as_excel']
 
@@ -114,7 +123,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         if 'staff' in group_names:
             return ('application_mark',)
         if 'cashier' in group_names or request.user.is_superuser:
-            return ('receive_department', 'receive_user', 'divide_mark')
+            return ('receive_department', 'receive_user', 'divide_mark', 'is_receive')
         return ()
 
     def get_changelist_instance(self, request):
@@ -146,4 +155,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         obj.save()
 
 
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Application, ApplicationAdmin)
