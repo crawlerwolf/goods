@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'application.middleware.PerformanceLoggerMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -176,23 +177,43 @@ LOGGING = {
             # 'level': 'INFO',
             'class': 'logging.FileHandler',
             'formatter': 'simple',
-            'filename': os.path.join(BASE_DIR, 'application.log'),
+            'filename': os.path.join(BASE_DIR, 'application.export.log'),
             'encoding': 'utf-8',
-        }
+        },
+        'performance': {
+            #'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'simple',
+            'encoding': 'utf-8',
+            'filename': os.path.join(BASE_DIR, 'application.performance.log'),
+        },
+        'application': {
+            # 'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'simple',
+            'encoding': 'utf-8',
+            'filename': os.path.join(BASE_DIR, 'application.log'),
+        },
     },
     'root': {
-        'handlers': ['console', 'file'],
+        'handlers': ['console', "file"],
         'level': 'INFO',
     },
     'loggers': {
         'django': {
-                    'handlers': ['console', 'file'],
-                    'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-                    'propagate': False,
-                },
-        'application': {
+            'handlers': ['console', 'application'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+        'application.admin': {
             "handlers": ["console", "file"],
             "level": "DEBUG",
+            "propagate": False,
+        },
+        "application.middleware": {
+            "handlers": ["console", "performance"],
+            "level": "DEBUG",
+            "propagate": False,
         },
     }
 }
