@@ -18,7 +18,14 @@ class PerformanceLoggerMiddleware:
         response = self.get_response(request)
         duration = time.time() - start_time
         response["X-Page-Duration-ms"] = int(duration * 1000)
-        logger.info("duration:%s url:%s parameters:%s", duration, request.path, request.GET.dict())
+        parameters = {}
+        method = request.META['REQUEST_METHOD']
+        if method == 'GET':
+            parameters = request.GET.dict()
+        # if method == 'POST':
+        #     parameters = request.POST.dict()
+        logger.info("duration:%s  method:%s url:%s parameters:%s", duration, method,
+                    request.path, parameters)
 
         # Code to be executed for each request/response after
         # the view is called.
