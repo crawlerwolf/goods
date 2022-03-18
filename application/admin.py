@@ -5,6 +5,7 @@ import datetime
 import logging
 
 from django.contrib import admin
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
@@ -27,6 +28,10 @@ class DateUserEnconding(json.JSONEncoder):
 class UserAdmin(admin.ModelAdmin):
     search_fields = ('username',)
     ordering = ('username',)
+
+    def save_model(self, request, obj, form, change):
+        obj.password = make_password(form.initial["password"])
+        obj.save()
 
 
 class ApplicationAdmin(admin.ModelAdmin):
