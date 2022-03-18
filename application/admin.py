@@ -5,7 +5,7 @@ import datetime
 import logging
 
 from django.contrib import admin
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, identify_hasher
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
@@ -30,7 +30,10 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ('username',)
 
     def save_model(self, request, obj, form, change):
-        obj.password = make_password(form.initial["password"])
+        try:
+            identify_hasher(request.POST["password"])
+        except ValueError:
+            obj.password = make_password(request.POST["password"])
         obj.save()
 
 
