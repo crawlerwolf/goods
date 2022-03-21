@@ -4,17 +4,46 @@ import json
 import datetime
 import logging
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.hashers import make_password, identify_hasher
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
 from .models import Application
+from .tasks import send_ding_talk_msg
 
 from application import goodsdata as gd
 # Register your models here.
 
 logger = logging.getLogger(__name__)
+
+
+@admin.action(permissions=['notify'], description='物品达到通知')
+def goods_reach_notify(modeladmin, request, queryset):
+    goods = ""
+    purchase_user = ""
+    for obj in queryset:
+        goods = obj.good_name + ";" + goods
+        purchase_user = obj.purchase_user.username + ";" + purchase_user
+    # send_ding_talk("物品%s 已到，采购人%s已经物品放入仓库" % (goods, purchase_user))
+    # 这里的消息发送到钉钉， 或者通过 Celery 异步发送到钉钉
+    # send_ding_talk_msg.delay("物品%s 已到，采购人%s已经物品放入仓库" % (goods, purchase_user))
+    messages.add_message(request, messages.INFO, '已经成功发送物品到达通知')
+
+
+@admin.action(permissions=['receive'], description='物品领取通知')
+def goods_receive_notify(modeladmin, request, queryset):
+    goods = ""
+    receive_user = ""
+    divide_use = ""
+    for obj in queryset:
+        goods = obj.good_name + ";" + goods
+        receive_user = obj.receive_user.username + ";" + receive_user
+        divide_use = obj.divide_use.username + ";" + divide_use
+    # send_ding_talk("物品%s 已到，申请人%s，请到分发人%s" % (goods, receive_user, divide_use))
+    # 这里的消息发送到钉钉， 或者通过 Celery 异步发送到钉钉
+    # send_ding_talk_msg.delay("物品%s 已到，申请人%s，请到分发人%s" % (goods, receive_user, divide_use))
+    messages.add_message(request, messages.INFO, '已经成功发送物品领取通知')
 
 
 class DateUserEnconding(json.JSONEncoder):
@@ -49,7 +78,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 
     ordering = ('is_purchase', 'is_reach', 'is_receive')
 
-    actions = ['export_model_as_csv', 'export_model_as_json']
+    actions = ['export_model_as_csv', 'export_model_as_json', goods_reach_notify]
 
     @admin.action(permissions=['csv'], description=u'导出为csv')
     def export_model_as_csv(self, request, queryset):
@@ -79,7 +108,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 csv_line_values.append(filed_value)
             writer.writerow(csv_line_values)
         logger.info('账户{user}导出{nums}条物品记录-csv'.format(user=request.user, nums=len(queryset)))
-
+        messages.add_message(request, messages.INFO, 'csv文件导出成功')
         return response
 
     def has_csv_permission(self, request):
@@ -112,12 +141,23 @@ class ApplicationAdmin(admin.ModelAdmin):
         response.write(file.getvalue())
         file.close()
         logger.info(u'账户{user}导出{nums}条物品记录-json'.format(user=request.user, nums=len(queryset)))
+        messages.add_message(request, messages.INFO, 'json文件导出成功')
         return response
 
     def has_json_permission(self, request):
         """Does the user have the json permission?"""
         opts = self.opts
         return request.user.has_perm('%s.%s' % (opts.app_label, 'json'))
+
+    def has_notify_permission(self, request):
+        """Does the user have the notify permission?"""
+        opts = self.opts
+        return request.user.has_perm('%s.%s' % (opts.app_label, 'notify'))
+
+    def has_receive_permission(self, request):
+        """Does the user have the receive permission?"""
+        opts = self.opts
+        return request.user.has_perm('%s.%s' % (opts.app_label, 'receive'))
 
     def get_readonly_fields(self, request, obj=None):
         group_names = self.get_group_names(request.user)

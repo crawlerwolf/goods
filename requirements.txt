@@ -2,3 +2,6 @@ Django==3.2.12
 PyMySQL==1.0.2
 django-redis==5.2.0
 django-grappelli==3.0.3
+DingtalkChatbot==1.5.3
+Celery==5.0.5
+flower==1.0.0

@@ -177,7 +177,7 @@ LOGGING = {
             # 'level': 'INFO',
             'class': 'logging.FileHandler',
             'formatter': 'simple',
-            'filename': os.path.join(BASE_DIR, 'application.export.log'),
+            'filename': os.path.join(BASE_DIR, 'application.admin.log'),
             'encoding': 'utf-8',
         },
         'performance': {
@@ -217,3 +217,8 @@ LOGGING = {
         },
     }
 }
+
+
+# 钉钉机器人配置
+DINGTALK_WEB_HOOK = ""
+DINGTALK_SECRET = ""

@@ -49,5 +49,7 @@ class Application(models.Model):
         verbose_name = u'物品详情'
         verbose_name_plural = verbose_name
         permissions = [('csv', u'导出csv格式数据'),
-                       ('json', u'导出json格式数据')
+                       ('json', u'导出json格式数据'),
+                       ("notify", u'物品达到'),
+                       ('receive', u'物品领取'),
                        ]
