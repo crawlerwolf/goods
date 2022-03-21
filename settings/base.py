@@ -217,8 +217,3 @@ LOGGING = {
         },
     }
 }
-
-
-# 钉钉机器人配置
-DINGTALK_WEB_HOOK = ""
-DINGTALK_SECRET = ""

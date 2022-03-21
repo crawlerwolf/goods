@@ -1,0 +1,1 @@
+python manage.py runserver --settings=settings.production 0.0.0.0:8000
