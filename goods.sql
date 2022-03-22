@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80013
 File Encoding         : 65001
 
-Date: 2022-03-17 16:27:07
+Date: 2022-03-22 10:25:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,20 +49,21 @@ CREATE TABLE `application_application` (
   CONSTRAINT `application_applicat_purchase_user_id_c31be2f4_fk_auth_user` FOREIGN KEY (`purchase_user_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `application_application_divide_use_id_3d0fbe09_fk_auth_user_id` FOREIGN KEY (`divide_use_id`) REFERENCES `auth_user` (`id`),
   CONSTRAINT `application_application_receive_user_id_68365522_fk_auth_user_id` FOREIGN KEY (`receive_user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of application_application
 -- ----------------------------
-INSERT INTO `application_application` VALUES ('2', 'A4打印纸', '包', '11', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
+INSERT INTO `application_application` VALUES ('2', 'A4打印纸', '包', '11', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-18', null, '2', '4', '2', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
 INSERT INTO `application_application` VALUES ('3', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
 INSERT INTO `application_application` VALUES ('4', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '3', '4', '3', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
 INSERT INTO `application_application` VALUES ('5', 'A4打印纸', '包', '10', '打印', '采购部', '2022-03-15', null, '采购部', '2022-03-17', null, '3', '4', '3', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
 INSERT INTO `application_application` VALUES ('6', 'A4打印纸', '包', '1', '打印', '采购部', '2022-03-16', null, '采购部', '2022-03-17', null, '2', '4', '2', '1', '1', '1', '2022-03-16', '3', '2022-03-17');
 INSERT INTO `application_application` VALUES ('7', '机械硬盘', '1TB', '5', '扩容', '研发', '2022-03-17', null, '研发', '2022-03-17', null, '3', '4', '3', '1', '1', '1', '2022-03-17', '3', '2022-03-17');
 INSERT INTO `application_application` VALUES ('9', 'A4打印纸', '包', '1', '打印', '分发', '2022-03-17', null, '分发', '2022-03-17', null, '4', '4', '4', '1', '1', '1', '2022-03-17', '3', '2022-03-17');
-INSERT INTO `application_application` VALUES ('11', 'A4打印纸', '包', '1', '打印', '分发', '2022-03-17', null, '', null, null, '4', null, null, '1', '0', '0', '2022-03-17', '3', null);
-INSERT INTO `application_application` VALUES ('12', '机械硬盘', '1TB', '1', '扩容', '采购', '2022-03-17', null, '', null, null, '2', null, null, '0', '0', '0', null, null, null);
+INSERT INTO `application_application` VALUES ('11', 'A4打印纸', '包', '1', '打印', '分发', '2022-03-17', null, '', null, null, '4', null, null, '1', '1', '0', '2022-03-17', '3', '2022-03-18');
+INSERT INTO `application_application` VALUES ('12', '机械硬盘', '1TB', '1', '扩容', '采购', '2022-03-17', null, '', null, null, '2', null, null, '1', '0', '0', null, '3', null);
+INSERT INTO `application_application` VALUES ('13', '机械硬盘', '1TB', '3', '扩容', '研发', '2022-03-18', null, '', null, null, '3', null, null, '0', '0', '0', null, null, null);
 
 -- ----------------------------
 -- Table structure for auth_group
@@ -95,7 +96,7 @@ CREATE TABLE `auth_group_permissions` (
   KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`),
   CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_group_permissions
@@ -109,11 +110,13 @@ INSERT INTO `auth_group_permissions` VALUES ('2', '2', '26');
 INSERT INTO `auth_group_permissions` VALUES ('4', '2', '28');
 INSERT INTO `auth_group_permissions` VALUES ('20', '2', '29');
 INSERT INTO `auth_group_permissions` VALUES ('24', '2', '31');
+INSERT INTO `auth_group_permissions` VALUES ('35', '2', '34');
 INSERT INTO `auth_group_permissions` VALUES ('31', '4', '25');
 INSERT INTO `auth_group_permissions` VALUES ('27', '4', '26');
 INSERT INTO `auth_group_permissions` VALUES ('28', '4', '28');
 INSERT INTO `auth_group_permissions` VALUES ('29', '4', '29');
 INSERT INTO `auth_group_permissions` VALUES ('30', '4', '31');
+INSERT INTO `auth_group_permissions` VALUES ('34', '4', '33');
 
 -- ----------------------------
 -- Table structure for auth_permission
@@ -127,7 +130,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_permission
@@ -161,8 +164,9 @@ INSERT INTO `auth_permission` VALUES ('26', 'Can change application', '7', 'chan
 INSERT INTO `auth_permission` VALUES ('27', 'Can delete application', '7', 'delete_application');
 INSERT INTO `auth_permission` VALUES ('28', 'Can view application', '7', 'view_application');
 INSERT INTO `auth_permission` VALUES ('29', '导出csv格式数据', '7', 'csv');
-INSERT INTO `auth_permission` VALUES ('30', '导出excel格式数据', '7', 'excel');
 INSERT INTO `auth_permission` VALUES ('31', '导出json格式数据', '7', 'json');
+INSERT INTO `auth_permission` VALUES ('33', '物品达到', '7', 'notify');
+INSERT INTO `auth_permission` VALUES ('34', '物品领取', '7', 'receive');
 
 -- ----------------------------
 -- Table structure for auth_user
@@ -182,15 +186,17 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_user
 -- ----------------------------
-INSERT INTO `auth_user` VALUES ('1', 'pbkdf2_sha256$260000$hSfRks9gA4hzsvAlvlZPo8$cIhDWZYI3gDm31UFDykPFW017GVacPJv4pzczuW9q8s=', '2022-03-17 16:24:15.063368', '1', 'admin', '', '', 'admin@qq.com', '1', '1', '2022-03-15 09:58:48.851740');
-INSERT INTO `auth_user` VALUES ('2', 'pbkdf2_sha256$260000$rkb5sBrAQLMoE3v5kLzHdX$iq+cmRkzvWTn3lEg6UMUN96X+XDIExYq1N93I0BMTH8=', '2022-03-17 16:26:04.353789', '0', 'demo1', '', '', '', '1', '1', '2022-03-15 10:27:00.000000');
-INSERT INTO `auth_user` VALUES ('3', 'pbkdf2_sha256$260000$8ectHMID3bJUdUUhoW9MBf$+npTtesrf/A0mby4aWBpFY11kOXYq33sIBcgj+bHooY=', '2022-03-17 16:25:53.204648', '0', 'demo2', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
-INSERT INTO `auth_user` VALUES ('4', 'pbkdf2_sha256$260000$Mm2h6wO9g9mne3r0lkLYVa$sGpcwJFRGs2gMi0kyw9j4U7OOo1DGJyQYivyatmSKps=', '2022-03-17 16:04:43.498320', '0', 'demo3', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
+INSERT INTO `auth_user` VALUES ('1', 'pbkdf2_sha256$260000$hSfRks9gA4hzsvAlvlZPo8$cIhDWZYI3gDm31UFDykPFW017GVacPJv4pzczuW9q8s=', '2022-03-21 16:17:36.492029', '1', 'admin', '', '', 'admin@qq.com', '1', '1', '2022-03-15 09:58:00.000000');
+INSERT INTO `auth_user` VALUES ('2', 'pbkdf2_sha256$260000$9c96z0A4i7JHHPeKJ02Rsl$OvNQQoYMggxVMVq+nzUv4MjtaO/uaLZH7COfBMSb2qo=', '2022-03-21 13:13:14.594805', '0', 'demo1', '', '', '', '1', '1', '2022-03-15 10:27:00.000000');
+INSERT INTO `auth_user` VALUES ('3', 'pbkdf2_sha256$260000$8ectHMID3bJUdUUhoW9MBf$+npTtesrf/A0mby4aWBpFY11kOXYq33sIBcgj+bHooY=', '2022-03-21 16:25:40.870530', '0', 'demo2', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
+INSERT INTO `auth_user` VALUES ('4', 'pbkdf2_sha256$260000$Mm2h6wO9g9mne3r0lkLYVa$sGpcwJFRGs2gMi0kyw9j4U7OOo1DGJyQYivyatmSKps=', '2022-03-21 13:36:47.028278', '0', 'demo3', '', '', '', '1', '1', '2022-03-15 10:28:00.000000');
+INSERT INTO `auth_user` VALUES ('5', 'pbkdf2_sha256$260000$y7BUcqNnWmxdAvHrJgEARZ$aPZ7u0cTOd28dLUEzFNLgcIwfks4vFsA5aAjXnFacXc=', '2022-03-18 16:18:00.000000', '0', 'demo', '', '', '', '1', '1', '2022-03-18 14:58:00.000000');
+INSERT INTO `auth_user` VALUES ('6', 'pbkdf2_sha256$260000$TT1CRMWwR9AdWEUpqgUWUw$izw4gFNLeZLcicjdBtylZFXF9tOrBFgYBZT3vrYT8Uk=', '2022-03-18 16:20:15.805260', '0', 'demo4', '', '', '', '1', '1', '2022-03-18 16:19:00.000000');
 
 -- ----------------------------
 -- Table structure for auth_user_groups
@@ -205,7 +211,7 @@ CREATE TABLE `auth_user_groups` (
   KEY `auth_user_groups_group_id_97559544_fk_auth_group_id` (`group_id`),
   CONSTRAINT `auth_user_groups_group_id_97559544_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
   CONSTRAINT `auth_user_groups_user_id_6a12ed8b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_user_groups
@@ -213,6 +219,8 @@ CREATE TABLE `auth_user_groups` (
 INSERT INTO `auth_user_groups` VALUES ('1', '2', '1');
 INSERT INTO `auth_user_groups` VALUES ('4', '3', '4');
 INSERT INTO `auth_user_groups` VALUES ('3', '4', '2');
+INSERT INTO `auth_user_groups` VALUES ('8', '5', '1');
+INSERT INTO `auth_user_groups` VALUES ('9', '6', '1');
 
 -- ----------------------------
 -- Table structure for auth_user_user_permissions
@@ -227,7 +235,7 @@ CREATE TABLE `auth_user_user_permissions` (
   KEY `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` (`permission_id`),
   CONSTRAINT `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of auth_user_user_permissions
@@ -251,7 +259,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of django_admin_log
@@ -353,6 +361,32 @@ INSERT INTO `django_admin_log` VALUES ('94', '2022-03-17 15:38:17.985800', '4', 
 INSERT INTO `django_admin_log` VALUES ('95', '2022-03-17 15:38:18.078524', '3', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
 INSERT INTO `django_admin_log` VALUES ('96', '2022-03-17 15:38:18.229149', '2', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
 INSERT INTO `django_admin_log` VALUES ('97', '2022-03-17 15:40:05.750432', '12', '机械硬盘', '1', '[{\"added\": {}}]', '7', '2');
+INSERT INTO `django_admin_log` VALUES ('98', '2022-03-18 11:40:59.799779', '13', '机械硬盘', '1', '[{\"added\": {}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('99', '2022-03-18 11:47:22.923679', '12', '机械硬盘', '2', '[{\"changed\": {\"fields\": [\"\\u662f\\u5426\\u8d2d\\u4e70\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('100', '2022-03-18 11:47:41.374313', '11', 'A4打印纸', '2', '[{\"changed\": {\"fields\": [\"\\u662f\\u5426\\u6536\\u5230\", \"\\u5230\\u8d27\\u65e5\\u671f\"]}}]', '7', '3');
+INSERT INTO `django_admin_log` VALUES ('101', '2022-03-18 15:01:38.850145', '5', 'demo', '1', '[{\"added\": {}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('102', '2022-03-18 15:14:29.369842', '5', 'demo', '2', '[]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('103', '2022-03-18 15:34:25.696396', '5', 'demo', '2', '[{\"changed\": {\"fields\": [\"Last login\", \"Groups\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('104', '2022-03-18 15:34:55.032924', '5', 'demo', '2', '[{\"changed\": {\"fields\": [\"Password\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('105', '2022-03-18 15:38:16.577672', '5', 'demo', '2', '[]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('106', '2022-03-18 15:43:31.324525', '5', 'demo', '2', '[]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('107', '2022-03-18 15:44:18.115333', '5', 'demo', '2', '[{\"changed\": {\"fields\": [\"Password\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('108', '2022-03-18 15:44:44.672273', '5', 'demo', '2', '[]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('109', '2022-03-18 15:46:15.599961', '5', 'demo', '2', '[{\"changed\": {\"fields\": [\"Password\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('110', '2022-03-18 15:46:29.297306', '5', 'demo', '2', '[{\"changed\": {\"fields\": [\"Password\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('111', '2022-03-18 15:46:47.661173', '5', 'demo', '2', '[]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('112', '2022-03-18 16:15:48.999560', '1', 'admin', '2', '[{\"changed\": {\"fields\": [\"Last login\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('113', '2022-03-18 16:16:02.986592', '5', 'demo', '2', '[]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('114', '2022-03-18 16:16:11.057151', '5', 'demo', '2', '[]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('115', '2022-03-18 16:18:13.538060', '5', 'demo', '2', '[{\"changed\": {\"fields\": [\"Last login\", \"Groups\", \"User permissions\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('116', '2022-03-18 16:19:20.440786', '5', 'demo', '2', '[{\"changed\": {\"fields\": [\"Last login\", \"Groups\", \"User permissions\"]}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('117', '2022-03-18 16:19:55.716311', '6', 'demo4', '1', '[{\"added\": {}}]', '4', '1');
+INSERT INTO `django_admin_log` VALUES ('118', '2022-03-18 16:57:27.426747', '2', 'A4打印纸', '2', '[]', '7', '4');
+INSERT INTO `django_admin_log` VALUES ('119', '2022-03-21 13:04:49.143156', '2', 'cashier', '2', '[{\"changed\": {\"fields\": [\"Permissions\"]}}]', '3', '1');
+INSERT INTO `django_admin_log` VALUES ('120', '2022-03-21 13:16:56.602823', '2', 'cashier', '2', '[{\"changed\": {\"fields\": [\"Permissions\"]}}]', '3', '1');
+INSERT INTO `django_admin_log` VALUES ('121', '2022-03-21 13:18:10.195915', '2', 'cashier', '2', '[]', '3', '1');
+INSERT INTO `django_admin_log` VALUES ('122', '2022-03-21 13:31:57.510296', '4', 'purchase', '2', '[{\"changed\": {\"fields\": [\"Permissions\"]}}]', '3', '1');
+INSERT INTO `django_admin_log` VALUES ('123', '2022-03-21 13:37:49.269874', '2', 'cashier', '2', '[{\"changed\": {\"fields\": [\"Permissions\"]}}]', '3', '1');
 
 -- ----------------------------
 -- Table structure for django_content_type
@@ -387,7 +421,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of django_migrations
@@ -421,6 +455,9 @@ INSERT INTO `django_migrations` VALUES ('30', 'application', '0008_auto_20220317
 INSERT INTO `django_migrations` VALUES ('31', 'application', '0009_auto_20220317_1236', '2022-03-17 12:36:39.405572');
 INSERT INTO `django_migrations` VALUES ('32', 'application', '0010_auto_20220317_1504', '2022-03-17 15:05:10.090648');
 INSERT INTO `django_migrations` VALUES ('33', 'application', '0011_auto_20220317_1537', '2022-03-17 15:37:46.060195');
+INSERT INTO `django_migrations` VALUES ('34', 'application', '0012_alter_application_options', '2022-03-21 13:04:35.876685');
+INSERT INTO `django_migrations` VALUES ('35', 'application', '0013_alter_application_options', '2022-03-21 13:15:10.022993');
+INSERT INTO `django_migrations` VALUES ('36', 'application', '0014_alter_application_options', '2022-03-21 13:31:26.954054');
 
 -- ----------------------------
 -- Table structure for django_session
