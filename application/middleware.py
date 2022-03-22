@@ -2,10 +2,15 @@
 import logging
 import time
 
+from django.http import HttpResponse
+import traceback
+
+from .tasks import send_ding_talk_msg, send_sentry_msg
+
 logger = logging.getLogger(__name__)
 
 
-class PerformanceLoggerMiddleware:
+class PerformanceLoggerexceptionMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         # One-time configuration and initialization.
@@ -31,3 +36,21 @@ class PerformanceLoggerMiddleware:
         # the view is called.
 
         return response
+
+    def process_exception(self, request, exception):
+        if exception:
+            message = "url:{url} ** msg:{error} ````{tb}````".format(
+                url=request.build_absolute_uri(),
+                error=repr(exception),
+                tb=traceback.format_exc()
+            )
+
+            logger.warning(message)
+
+            # send dingtalk message
+            # send_ding_talk_msg(message)
+
+            # capture exception to sentry:
+            send_sentry_msg(exception)
+
+        return HttpResponse("Error processing the request, please contact the system administrator.", status=500)

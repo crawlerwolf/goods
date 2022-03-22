@@ -2,6 +2,7 @@
 from celery import shared_task
 
 from .dingtalk import send_ding_talk
+from sentry_sdk import capture_exception
 
 @shared_task
 def send_ding_talk_msg(msg,  at_mobiles=[], at_dingtalk_ids=[], is_at_all=False, is_auto_at=True):
@@ -14,3 +15,8 @@ def send_ding_talk_msg(msg,  at_mobiles=[], at_dingtalk_ids=[], is_at_all=False,
     """
     send_ding_talk(msg, is_at_all=is_at_all, at_mobiles=at_mobiles,
                    at_dingtalk_ids=at_dingtalk_ids, is_auto_at=is_auto_at)
+
+
+@shared_task
+def send_sentry_msg(msg):
+    capture_exception(msg)

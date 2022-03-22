@@ -108,7 +108,6 @@ class ApplicationAdmin(admin.ModelAdmin):
                 csv_line_values.append(filed_value)
             writer.writerow(csv_line_values)
         logger.info('账户{user}导出{nums}条物品记录-csv'.format(user=request.user, nums=len(queryset)))
-        messages.add_message(request, messages.INFO, 'csv文件导出成功')
         return response
 
     def has_csv_permission(self, request):
@@ -141,7 +140,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         response.write(file.getvalue())
         file.close()
         logger.info(u'账户{user}导出{nums}条物品记录-json'.format(user=request.user, nums=len(queryset)))
-        messages.add_message(request, messages.INFO, 'json文件导出成功')
         return response
 
     def has_json_permission(self, request):
