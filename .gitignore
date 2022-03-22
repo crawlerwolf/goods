@@ -2,3 +2,4 @@
 /application/__pycache__
 /goods/__pycache__
 /settings/__pycache__
+/celery_demo/__pycache__
