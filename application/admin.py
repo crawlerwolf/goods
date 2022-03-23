@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 
 from .models import Application
-from .tasks import send_ding_talk_msg
+from .tasks import send_ding_talk_msg, send_sentry_message
 
 from application import goodsdata as gd
 # Register your models here.
@@ -27,7 +27,8 @@ def goods_reach_notify(modeladmin, request, queryset):
         purchase_user = obj.purchase_user.username + ";" + purchase_user
     # send_ding_talk("物品%s 已到，采购人%s已经物品放入仓库" % (goods, purchase_user))
     # 这里的消息发送到钉钉， 或者通过 Celery 异步发送到钉钉
-    # send_ding_talk_msg.delay("物品%s 已到，采购人%s已经物品放入仓库" % (goods, purchase_user))
+    send_ding_talk_msg.delay("物品%s 已到，采购人%s已经物品放入仓库" % (goods, purchase_user))
+    send_sentry_message.delay('已经成功发送物品到达通知')
     messages.add_message(request, messages.INFO, '已经成功发送物品到达通知')
 
 
@@ -42,7 +43,8 @@ def goods_receive_notify(modeladmin, request, queryset):
         divide_use = obj.divide_use.username + ";" + divide_use
     # send_ding_talk("物品%s 已到，申请人%s，请到分发人%s" % (goods, receive_user, divide_use))
     # 这里的消息发送到钉钉， 或者通过 Celery 异步发送到钉钉
-    # send_ding_talk_msg.delay("物品%s 已到，申请人%s，请到分发人%s" % (goods, receive_user, divide_use))
+    send_ding_talk_msg.delay("物品%s 已到，申请人%s，请到分发人%s" % (goods, receive_user, divide_use))
+    send_sentry_message.delay('已经成功发送物品领取通知')
     messages.add_message(request, messages.INFO, '已经成功发送物品领取通知')
 
 
@@ -107,7 +109,9 @@ class ApplicationAdmin(admin.ModelAdmin):
                 filed_value = getattr(obj, filed)
                 csv_line_values.append(filed_value)
             writer.writerow(csv_line_values)
-        logger.info('账户{user}导出{nums}条物品记录-csv'.format(user=request.user, nums=len(queryset)))
+        msg = '账户{user}导出{nums}条物品记录-csv'.format(user=request.user, nums=len(queryset))
+        logger.info(msg)
+        send_sentry_message.delay(msg)
         return response
 
     def has_csv_permission(self, request):
@@ -139,7 +143,9 @@ class ApplicationAdmin(admin.ModelAdmin):
             file.write("\n")
         response.write(file.getvalue())
         file.close()
-        logger.info(u'账户{user}导出{nums}条物品记录-json'.format(user=request.user, nums=len(queryset)))
+        msg = u'账户{user}导出{nums}条物品记录-json'.format(user=request.user, nums=len(queryset))
+        logger.info(msg)
+        send_sentry_message.delay(msg)
         return response
 
     def has_json_permission(self, request):

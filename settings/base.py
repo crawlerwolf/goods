@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
-    'application.middleware.PerformanceLoggerMiddleware',
+    'application.middleware.PerformanceLoggerExceptionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
